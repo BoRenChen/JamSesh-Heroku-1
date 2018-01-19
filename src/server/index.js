@@ -12,6 +12,6 @@ app.get('/', (req, res, next) =>
 
 //socket test
 io.on('connection', socket =>
-	socket.emit('hello', { message: 'hello from server!' }));
+	socket.emit('hello', { message: 'hello from server! and BoRen' }));
 
 server.listen(port);
