@@ -1,4 +1,16 @@
 BoRen Sean
+
+## Deployment Steps
+
+- Setting up project and Heroku
+https://medium.com/@eugrdn/deploy-create-react-app-with-sockets-io-to-heroku-1def8d53b976
+
+- Moving the front end code
+ - Dependencies
+  - yarn add tone jquery
+
+- Moving the back end code
+
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
 
 Below you will find some information on how to perform common tasks.<br>
