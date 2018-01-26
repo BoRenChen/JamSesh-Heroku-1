@@ -11,5 +11,5 @@ const socket =io();
 socket.on('hello', ({ message }) =>
 	alert(message));
 
-ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(<App socket={socket}/>, document.getElementById('root'));
 registerServiceWorker();

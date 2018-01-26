@@ -2,12 +2,43 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import Tone from "tone";
 import $ from "jquery";
+import io from 'socket.io-client';
 import './App.css';
+
 
 class App extends Component {
 
   componentDidMount() {
+ 
+var socket = this.props.socket;
 
+//socket test
+socket.on('hello', ({ message }) =>
+  alert(message + 'app.js'));
+
+socket.emit('join', 'sinding from app to server');
+
+  //SOCKET CONNECTION
+ const io = require('socket.io-client')
+ socket = io();
+
+  socket.on('connect', function(data) {
+      console.log('joining the server - from client');
+      socket.emit('join', 'Sending from App.js to Socket server.');
+   });
+
+  socket.on("press", function(data){
+    console.log(data);
+    synth.triggerAttack(data);
+  });
+
+  socket.on('release', function(data){
+    console.log("release" + data)
+      synth.triggerRelease();
+   })
+
+
+  //TONE STUFF
   var synth2 = new Tone.PolySynth(6, Tone.Synth, {
         "oscillator" : {
           "partials" : [0, 2, 3, 4],
@@ -72,7 +103,7 @@ console.log("up! ");
         //play the note on mouse down
         synth.triggerAttack(e.target.textContent)
         //Play sound base on content of the li
-        //socket.emit('buttonPressed', e.target.textContent);
+        socket.emit('buttonPressed', e.target.textContent);
 
         console.log("from local" + e.target.textContent)
 
@@ -81,7 +112,7 @@ console.log("up! ");
         //release on mouseup
         synth.triggerRelease()
         //Release sound base on content of the li.
-        //socket.emit('buttonReleased', e.target.textContent);
+        socket.emit('buttonReleased', e.target.textContent);
       })
     })
 
@@ -91,7 +122,7 @@ console.log("up! ");
       <div className="App">
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
+          <h1 className="App-title">Welcome to JamSesh Powered By React</h1>
         </header>
 
       <div className="component-app">

@@ -10,8 +10,43 @@ app.use(express.static(path.join(__dirname, '../../build')));
 app.get('/', (req, res, next) =>
 	res.sendFile(__dirname + './index.html'));
 
-//socket test
-io.on('connection', socket =>
-	socket.emit('hello', { message: 'hello from server! and BoRen' }));
 
-server.listen(port);
+
+//Socket Listener
+io.on('connection', function(client) {
+    console.log('Client connected...');
+    client.emit('hello', { message: 'Hello from server'})
+
+    client.on('join', function(data) {
+     	console.log('joined the server from App.js - from server');
+
+        client.emit('welcomeMsg', 'Connected to socket')
+    });
+    client.on('messages', function(data) {
+           client.emit('broad', data);
+           client.broadcast.emit('broad',data);
+    });
+    client.on('buttonPressed', function(data) {
+        console.log("server pressed" + data);
+        client.broadcast.emit('press', data);
+    });
+    client.on('buttonReleased', function(data){
+        console.log("server released" + data);
+      client.broadcast.emit('release', data);
+    });
+    client.on('disconnect', function () {
+    console.log('Client disconnected...');
+      client.emit('disconnected');
+    });
+
+
+});
+
+//socket test
+/*io.on('connection', socket =>
+	socket.emit('hello', { message: 'hello from server! and Booo - commit test' }));
+*/
+//PROD
+//server.listen(port);
+//Dev.
+//server.listen(3000);
